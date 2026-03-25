@@ -1,1 +1,3 @@
-﻿Console.WriteLine("Hello, World!");
+﻿using ligabetplay.Modules.Menus;
+
+Desing.MainMenu();
