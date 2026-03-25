@@ -1,5 +1,5 @@
 using ligabetplay.Modules.Menus;
+using ligabetplay.Modules.Menus_logic;
 
-// Mostrar logo de bienvenida
 Desing.MainMenu();
 
