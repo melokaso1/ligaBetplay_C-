@@ -3,60 +3,53 @@ using LigaBetplay.Core.Data;
 using LigaBetplay.Core.Services;
 using LigaBetplay.Modules.Equipos;
 using LigaBetplay.Modules.Partidos;
+using LigaBetplay.Modules.Tabla;
 
 namespace LigaBetplay.Core
 {
-    // Clase de verificacion manual del sistema — sin frameworks de testing
+    // Clase de verificacion manual del sistema
     public static class VerificacionSistema
     {
         public static void Ejecutar()
         {
             var contexto = new TorneoContext();
             var servicioRandom = new ServicioRandom();
+            var servicioCalendario = new ServicioCalendario();
             var servicioEquipos = new ServicioEquipos(contexto);
             var servicioPartidos = new ServicioPartidos(contexto, servicioRandom);
+            var servicioTabla = new ServicioTabla(contexto);
 
-            // --- ESCENARIO 1: Registrar equipos y verificar la lista ---
-            Console.WriteLine("=== ESCENARIO 1: Registro de equipos ===");
+            // --- ESCENARIO 1: Cargar los 20 equipos y generar el fixture ---
+            Console.WriteLine("=== ESCENARIO 1: Registro de equipos y generacion del fixture ===");
 
-            servicioEquipos.RegistrarEquipo("Atletico Nacional");
+            foreach (var equipo in DatosIniciales.ObtenerEquipos())
+                servicioEquipos.RegistrarEquipo(equipo.Nombre);
+
+            // Probar duplicado
             servicioEquipos.RegistrarEquipo("Millonarios");
-            servicioEquipos.RegistrarEquipo("America de Cali");
-            servicioEquipos.RegistrarEquipo("Millonarios"); // duplicado, debe avisarse
 
-            var equipos = servicioEquipos.ListarEquipos();
-            Console.WriteLine($"Total de equipos registrados: {equipos.Count}");
-            foreach (var e in equipos)
-                Console.WriteLine($"  - {e.Nombre}");
+            Console.WriteLine($"\nTotal de equipos registrados: {contexto.Equipos.Count}");
 
-            // --- ESCENARIO 2: Simular un partido y verificar estadisticas ---
-            Console.WriteLine("\n=== ESCENARIO 2: Estadisticas antes y despues del partido ===");
+            // Generar el calendario round-robin y almacenarlo en el contexto
+            contexto.Fixture = servicioCalendario.GenerarFixture(contexto.Equipos);
+            Console.WriteLine($"Fixture generado: {contexto.Fixture.Count} fechas de 10 partidos cada una.");
 
-            var local = equipos[0];
-            var visitante = equipos[1];
+            // --- ESCENARIO 2: Simular la Fecha 1 y mostrar tabla ---
+            Console.WriteLine("\n=== ESCENARIO 2: Simulacion de la Fecha 1 ===");
+            servicioPartidos.SimularFechaActual();
+            servicioTabla.MostrarTabla();
 
-            Console.WriteLine($"\n[ANTES] {local.Nombre}: PJ={local.PJ} PG={local.PG} PE={local.PE} PP={local.PP} GF={local.GF} GC={local.GC} DG={local.DG} TP={local.TP}");
-            Console.WriteLine($"[ANTES] {visitante.Nombre}: PJ={visitante.PJ} PG={visitante.PG} PE={visitante.PE} PP={visitante.PP} GF={visitante.GF} GC={visitante.GC} DG={visitante.DG} TP={visitante.TP}");
+            // --- ESCENARIO 3: Simular las Fechas 2 y 3 y verificar que la tabla avanza ---
+            Console.WriteLine("\n=== ESCENARIO 3: Simular Fecha 2 y Fecha 3 ===");
+            servicioPartidos.SimularFechaActual();
+            servicioPartidos.SimularFechaActual();
+            servicioTabla.MostrarTabla();
 
-            Console.WriteLine("\nSimulando partido...");
-            servicioPartidos.SimularPartido(local, visitante);
-
-            Console.WriteLine($"\n[DESPUES] {local.Nombre}: PJ={local.PJ} PG={local.PG} PE={local.PE} PP={local.PP} GF={local.GF} GC={local.GC} DG={local.DG} TP={local.TP}");
-            Console.WriteLine($"[DESPUES] {visitante.Nombre}: PJ={visitante.PJ} PG={visitante.PG} PE={visitante.PE} PP={visitante.PP} GF={visitante.GF} GC={visitante.GC} DG={visitante.DG} TP={visitante.TP}");
-
-            // --- ESCENARIO 3: Simular mas partidos y listar historial ---
-            Console.WriteLine("\n=== ESCENARIO 3: Historial de partidos ===");
-
-            servicioPartidos.SimularPartido(equipos[0], equipos[2]);
-            servicioPartidos.SimularPartido(equipos[1], equipos[2]);
-
-            var partidos = servicioPartidos.ListarPartidos();
-            Console.WriteLine($"\nTotal de partidos simulados: {partidos.Count}");
-            Console.WriteLine("Historial:");
-            foreach (var p in partidos)
-                Console.WriteLine($"  {p.EquipoLocal.Nombre} {p.GolesLocal} - {p.GolesVisitante} {p.EquipoVisitante.Nombre}");
-
-            Console.WriteLine("\n=== VERIFICACION COMPLETADA ===");
+            Console.WriteLine($"\nPartidos simulados en total: {contexto.Partidos.Count}");
+            Console.WriteLine($"Proxima fecha a simular: {contexto.FechaActual}");
+            Console.WriteLine("=== VERIFICACION COMPLETADA ===");
         }
     }
 }
+
+

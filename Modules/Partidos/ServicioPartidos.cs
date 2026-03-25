@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using LigaBetplay.Core.Data;
 using LigaBetplay.Core.Models;
 using LigaBetplay.Core.Services;
 
 namespace LigaBetplay.Modules.Partidos
 {
-    // Servicio responsable de simular y registrar partidos del torneo
+    // Servicio responsable de simular partidos y fechas del torneo
     public class ServicioPartidos
     {
         private readonly TorneoContext _contexto;
@@ -18,51 +19,110 @@ namespace LigaBetplay.Modules.Partidos
             _servicioRandom = servicioRandom;
         }
 
-        // Simula un partido entre dos equipos, actualiza estadisticas y guarda el resultado
-        public void SimularPartido(Equipo equipoLocal, Equipo equipoVisitante)
+        // Simula todos los partidos de una fecha especifica y actualiza estadisticas
+        public void SimularFecha(int numeroFecha)
         {
-            int golesLocal = _servicioRandom.NextGoles();
-            int golesVisitante = _servicioRandom.NextGoles();
-
-            // Actualizar partidos jugados
-            equipoLocal.PJ++;
-            equipoVisitante.PJ++;
-
-            // Actualizar goles
-            equipoLocal.GF += golesLocal;
-            equipoLocal.GC += golesVisitante;
-            equipoVisitante.GF += golesVisitante;
-            equipoVisitante.GC += golesLocal;
-
-            // Determinar resultado y actualizar victorias, empates y derrotas
-            if (golesLocal > golesVisitante)
+            var fecha = ObtenerFecha(numeroFecha);
+            if (fecha == null)
             {
-                equipoLocal.PG++;
-                equipoVisitante.PP++;
+                Console.WriteLine($"La fecha {numeroFecha} no existe en el fixture.");
+                return;
             }
-            else if (golesVisitante > golesLocal)
+            if (fecha.Simulada)
             {
-                equipoVisitante.PG++;
-                equipoLocal.PP++;
-            }
-            else
-            {
-                equipoLocal.PE++;
-                equipoVisitante.PE++;
+                Console.WriteLine($"La fecha {numeroFecha} ya fue simulada.");
+                return;
             }
 
-            // Guardar el partido en memoria
-            var partido = new Partido(equipoLocal, equipoVisitante, golesLocal, golesVisitante);
-            _contexto.Partidos.Add(partido);
+            Console.WriteLine($"\n=== FECHA {numeroFecha} ===");
 
-            // Mostrar resultado en consola
-            Console.WriteLine($"{equipoLocal.Nombre} {golesLocal} - {golesVisitante} {equipoVisitante.Nombre}");
+            // Simular goles y actualizar estadisticas para todos los partidos
+            foreach (var partido in fecha.Partidos)
+            {
+                partido.GolesLocal = _servicioRandom.NextGoles();
+                partido.GolesVisitante = _servicioRandom.NextGoles();
+                ActualizarEstadisticas(partido);
+                _contexto.Partidos.Add(partido);
+            }
+
+            // Mostrar resultados agrupados por dia (3-4-3)
+            var porDia = fecha.Partidos.GroupBy(p => p.Dia).OrderBy(g => g.Key);
+            foreach (var grupo in porDia)
+            {
+                Console.WriteLine($"\n  [ Dia {grupo.Key} ]");
+                foreach (var partido in grupo)
+                    Console.WriteLine($"    {partido.EquipoLocal.Nombre,-28} {partido.GolesLocal} - {partido.GolesVisitante,1}  {partido.EquipoVisitante.Nombre}");
+            }
+
+            fecha.Simulada = true;
         }
 
-        // Devuelve el historial de partidos jugados
+        // Simula la proxima fecha pendiente y avanza el puntero de FechaActual
+        public void SimularFechaActual()
+        {
+            if (!HayFechasPendientes())
+            {
+                Console.WriteLine("Todas las fechas del torneo han sido simuladas.");
+                return;
+            }
+            SimularFecha(_contexto.FechaActual);
+            _contexto.FechaActual++;
+        }
+
+        // Indica si quedan fechas por simular
+        public bool HayFechasPendientes()
+        {
+            return _contexto.FechaActual <= 19;
+        }
+
+        // Devuelve el numero de la proxima fecha a simular
+        public int ObtenerNumeroFechaActual()
+        {
+            return _contexto.FechaActual;
+        }
+
+        // Devuelve una fecha especifica del fixture por su numero, o null si no existe
+        public Fecha? ObtenerFecha(int numero)
+        {
+            return _contexto.Fixture.Find(f => f.Numero == numero);
+        }
+
+        // Devuelve el historial de partidos simulados
         public List<Partido> ListarPartidos()
         {
             return _contexto.Partidos;
         }
+
+        // Actualiza PJ, PG, PE, PP, GF, GC de ambos equipos segun el resultado
+        private void ActualizarEstadisticas(Partido partido)
+        {
+            var local = partido.EquipoLocal;
+            var visitante = partido.EquipoVisitante;
+
+            local.PJ++;
+            visitante.PJ++;
+
+            local.GF += partido.GolesLocal;
+            local.GC += partido.GolesVisitante;
+            visitante.GF += partido.GolesVisitante;
+            visitante.GC += partido.GolesLocal;
+
+            if (partido.GolesLocal > partido.GolesVisitante)
+            {
+                local.PG++;
+                visitante.PP++;
+            }
+            else if (partido.GolesVisitante > partido.GolesLocal)
+            {
+                visitante.PG++;
+                local.PP++;
+            }
+            else
+            {
+                local.PE++;
+                visitante.PE++;
+            }
+        }
     }
 }
+

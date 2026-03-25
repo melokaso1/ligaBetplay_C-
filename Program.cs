@@ -1,10 +1,5 @@
 using ligabetplay.Modules.Menus;
-using LigaBetplay.Core;
 
-// Verificacion manual del sistema antes de iniciar el menu
-VerificacionSistema.Ejecutar();
-
-Console.ReadKey();
-
+// Mostrar logo de bienvenida
 Desing.MainMenu();
 
