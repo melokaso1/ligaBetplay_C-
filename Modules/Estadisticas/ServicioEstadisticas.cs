@@ -27,10 +27,6 @@ namespace LigaBetplay.Modules.Estadisticas
                 return;
             }
 
-            Console.WriteLine("\n  ╔══════════════════════════════════════════════════╗");
-            Console.WriteLine("  ║         ESTADISTICAS GENERALES DEL TORNEO       ║");
-            Console.WriteLine("  ╚══════════════════════════════════════════════════╝");
-
             // Lider actual
             var lider = equipos.OrderByDescending(e => e.TP).ThenByDescending(e => e.DG).First();
             Console.WriteLine($"\n  Lider actual              : {lider.Nombre} — {lider.TP} pts | DG: {lider.DG}");
@@ -68,11 +64,12 @@ namespace LigaBetplay.Modules.Estadisticas
             Console.WriteLine($"  Equipos sin victoria      : {(sinVictoria.Any() ? string.Join(", ", sinVictoria.Select(e => e.Nombre)) : "Ninguno")}");
 
             // Promedios y totales globales
+            int totalFechas = _contexto.Fixture.Count;
             Console.WriteLine($"\n  Promedio goles a favor    : {equipos.Average(e => e.GF):F2}");
             Console.WriteLine($"  Promedio goles en contra  : {equipos.Average(e => e.GC):F2}");
             Console.WriteLine($"  Total goles en el torneo  : {equipos.Sum(e => e.GF)}");
             Console.WriteLine($"  Total partidos jugados    : {_contexto.Partidos.Count}");
-            Console.WriteLine($"  Fechas simuladas          : {_contexto.FechaActual - 1} de 19");
+            Console.WriteLine($"  Fechas simuladas          : {_contexto.FechaActual - 1} de {totalFechas}");
         }
     }
 }

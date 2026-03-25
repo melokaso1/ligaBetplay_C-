@@ -1,4 +1,11 @@
+using System;
+using System.Collections.Generic;
+using LigaBetplay.Core;
 using ligabetplay.Modules.Menus_logic;
+using LigaBetplay.Modules.Equipos;
+using LigaBetplay.Modules.Partidos;
+using LigaBetplay.Modules.Tabla;
+using LigaBetplay.Modules.Estadisticas;
 
 namespace ligabetplay.Modules.Menus;
 
@@ -12,7 +19,8 @@ public class Desing
             { "2", sim_matches },
             { "3", show_pos_table },
             { "4", show_stats },
-            { "5", () => Environment.Exit(0) },
+            { "5", () => TorneoApp.Instance.ReiniciarTorneo() },
+            { "0", () => Environment.Exit(0) },
         };
         while (true)
         {
@@ -39,14 +47,15 @@ public class Desing
                                                                      \|___|/      
                                                                                   
                                                                                   
-
+ 
 1. Gestionar Equipos
 2. Simular Partidos
 3. Ver Tabla De Posiciones
 4. Ver estadisticas
-5. Salir
+5. Reiniciar Torneo
+0. Salir
 
-Oprime el numero que quieras seleccionar..."
+ Oprime el numero que quieras seleccionar..."
             );
 
             Logic.Menus_logic(Selections);
@@ -55,14 +64,20 @@ Oprime el numero que quieras seleccionar..."
 
     public static void teams_manaments()
     {
+        bool inMenu = true;
         Dictionary<string, Action> Selections = new Dictionary<string, Action>
         {
-            { "3", MainMenu },
+            { "1", EquiposUI.RegistrarEquipo },
+            { "2", EquiposUI.ListarEquipos },
+            { "3", EquiposUI.EliminarEquipo },
+            { "0", () => inMenu = false },
         };
 
-        Console.Clear();
-        Console.Write(
-            @"
+        while (inMenu)
+        {
+            Console.Clear();
+            Console.Write(
+                @"
    ____           _   _               _____            _                 
   / ___| ___  ___| |_(_) ___  _ __   | ____|__ _ _   _(_)_ __   ___  ___ 
  | |  _ / _ \/ __| __| |/ _ \| '_ \  |  _| / _` | | | | | '_ \ / _ \/ __|
@@ -72,34 +87,69 @@ Oprime el numero que quieras seleccionar..."
 
 1. Registrar equipo
 2. Listar equipos
-3. Volver
+3. Eliminar equipo
+0. Volver
 
 Oprime el numero que quieras seleccionar..."
-        );
-        Logic.Menus_logic(Selections);
+            );
+
+            Logic.Menus_logic(Selections);
+        }
     }
 
     public static void sim_matches()
     {
-        Console.Clear();
-        Console.Write(
-            @"
-      _                 _           _                  _                         _   _     _           
-  ___(_)_ __ ___  _   _| | __ _  __| | ___  _ __    __| | ___   _ __   __ _ _ __| |_(_) __| | ___  ___ 
- / __| | '_ ` _ \| | | | |/ _` |/ _` |/ _ \| '__|  / _` |/ _ \ | '_ \ / _` | '__| __| |/ _` |/ _ \/ __|
- \__ \ | | | | | | |_| | | (_| | (_| | (_) | |    | (_| |  __/ | |_) | (_| | |  | |_| | (_| | (_) \__ \
- |___/_|_| |_| |_|\__,_|_|\__,_|\__,_|\___/|_|     \__,_|\___| | .__/ \__,_|_|   \__|_|\__,_|\___/|___/
-                                                               |_|                                     
+        bool inMenu = true;
+        Dictionary<string, Action> Selections = new Dictionary<string, Action>
+        {
+            { "1", PartidosUI.SimularFecha },
+            { "2", PartidosUI.VerHistorial },
+            { "0", () => inMenu = false },
+        };
 
+        while (inMenu)
+        {
+            Console.Clear();
+            Console.Write(
+                @"
 
+░██████╗██╗███╗░░░███╗██╗░░░██╗██╗░░░░░░█████╗░░█████╗░██╗░█████╗░███╗░░██╗
+██╔════╝██║████╗░████║██║░░░██║██║░░░░░██╔══██╗██╔══██╗██║██╔══██╗████╗░██║
+╚█████╗░██║██╔████╔██║██║░░░██║██║░░░░░███████║██║░░╚═╝██║██║░░██║██╔██╗██║
+░╚═══██╗██║██║╚██╔╝██║██║░░░██║██║░░░░░██╔══██║██║░░██╗██║██║░░██║██║╚████║
+██████╔╝██║██║░╚═╝░██║╚██████╔╝███████╗██║░░██║╚█████╔╝██║╚█████╔╝██║░╚███║
+╚═════╝░╚═╝╚═╝░░░░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░╚════╝░╚═╝░░╚══╝
+
+██████╗░░█████╗░██████╗░████████╗██╗██████╗░░█████╗░░██████╗
+██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██║██╔══██╗██╔══██╗██╔════╝
+██████╔╝███████║██████╔╝░░░██║░░░██║██║░░██║██║░░██║╚█████╗░
+██╔═══╝░██╔══██║██╔══██╗░░░██║░░░██║██║░░██║██║░░██║░╚═══██╗
+██║░░░░░██║░░██║██║░░██║░░░██║░░░██║██████╔╝╚█████╔╝██████╔╝
+╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░╚═════╝░
 "
-        );
+            );
+
+            int proxima = TorneoApp.Instance.Partidos.ObtenerNumeroFechaActual();
+            int total = TorneoApp.Instance.Partidos.TotalFechas();
+
+            if (TorneoApp.Instance.Partidos.HayFechasPendientes())
+                Console.WriteLine($"\n  Proxima fecha a simular: Fecha {proxima} de {total}");
+            else
+                Console.WriteLine("\n  Todas las fechas han sido simuladas.");
+
+            Console.WriteLine("\n  1. Simular siguiente fecha");
+            Console.WriteLine("  2. Ver historial de partidos");
+            Console.WriteLine("  0. Volver");
+            Console.Write("\n  Oprime el numero que quieras seleccionar...");
+
+            Logic.Menus_logic(Selections);
+        }
     }
 
     public static void show_pos_table()
     {
         Console.Clear();
-        Console.WriteLine(
+        Console.Write(
             @"
   _____     _     _             _                        _      _                       
  |_   _|_ _| |__ | | __ _    __| | ___   _ __   ___  ___(_) ___(_) ___  _ __   ___  ___ 
@@ -107,16 +157,15 @@ Oprime el numero que quieras seleccionar..."
    | | (_| | |_) | | (_| | | (_| |  __/ | |_) | (_) \__ \ | (__| | (_) | | | |  __/\__ \
    |_|\__,_|_.__/|_|\__,_|  \__,_|\___| | .__/ \___/|___/_|\___|_|\___/|_| |_|\___||___/
                                         |_|                                             
-
-
 "
         );
+        TablaUI.MostrarTabla();
     }
 
     public static void show_stats()
     {
         Console.Clear();
-        Console.WriteLine(
+        Console.Write(
             @"
   _____     _            _ _     _   _               
  | ____|___| |_ __ _  __| (_)___| |_(_) ___ __ _ ___ 
@@ -124,9 +173,8 @@ Oprime el numero que quieras seleccionar..."
  | |___\__ \ || (_| | (_| | \__ \ |_| | (_| (_| \__ \
  |_____|___/\__\__,_|\__,_|_|___/\__|_|\___\__,_|___/
                                                      
-
-
 "
         );
+        EstadisticasUI.MostrarEstadisticas();
     }
 }

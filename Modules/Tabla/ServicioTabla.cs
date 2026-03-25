@@ -32,9 +32,10 @@ namespace LigaBetplay.Modules.Tabla
         {
             var tabla = ObtenerTablaOrdenada();
             int fechasMostradas = _contexto.FechaActual - 1;
+            int totalFechas = _contexto.Fixture.Count;
 
             Console.WriteLine();
-            Console.WriteLine($"  TABLA DE POSICIONES — Liga BetPlay 2026 (Fecha {fechasMostradas} de 19)");
+            Console.WriteLine($"  TABLA DE POSICIONES — Liga BetPlay 2026 (Fecha {fechasMostradas} de {totalFechas})");
             Console.WriteLine(new string('-', 80));
             Console.WriteLine($"  {"#",-4} {"Equipo",-28} {"PJ",3} {"PG",3} {"PE",3} {"PP",3} {"GF",4} {"GC",4} {"DG",4} {"TP",4}");
             Console.WriteLine(new string('-', 80));

@@ -72,7 +72,12 @@ namespace LigaBetplay.Modules.Partidos
         // Indica si quedan fechas por simular
         public bool HayFechasPendientes()
         {
-            return _contexto.FechaActual <= 19;
+            return _contexto.FechaActual <= _contexto.Fixture.Count;
+        }
+
+        public int TotalFechas()
+        {
+            return _contexto.Fixture.Count;
         }
 
         // Devuelve el numero de la proxima fecha a simular

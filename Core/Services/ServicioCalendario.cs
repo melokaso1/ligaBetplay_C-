@@ -10,18 +10,26 @@ namespace LigaBetplay.Core.Services
         public List<Fecha> GenerarFixture(List<Equipo> equipos)
         {
             var fixture = new List<Fecha>();
-            var circulo = new List<Equipo>(equipos); // copia mutable para rotar
-            int n = circulo.Count; // 20 equipos
+            if (equipos.Count < 2) return fixture;
 
-            for (int ronda = 0; ronda < n - 1; ronda++) // 19 fechas
+            var circulo = new List<Equipo>(equipos);
+            Equipo fantasma = new Equipo("FANTASMA");
+            
+            if (circulo.Count % 2 != 0)
+            {
+                circulo.Add(fantasma);
+            }
+
+            int n = circulo.Count; 
+
+            for (int ronda = 0; ronda < n - 1; ronda++) 
             {
                 var fecha = new Fecha(ronda + 1);
 
-                for (int i = 0; i < n / 2; i++) // 10 partidos por fecha
+                for (int i = 0; i < n / 2; i++) 
                 {
                     Equipo local, visitante;
 
-                    // Alternar local/visitante por paridad de ronda para equilibrar ventaja de campo
                     if (ronda % 2 == 0)
                     {
                         local = circulo[i];
@@ -33,15 +41,17 @@ namespace LigaBetplay.Core.Services
                         visitante = circulo[i];
                     }
 
-                    // Distribucion de partidos en 3 dias: Dia 1 (3 partidos), Dia 2 (4), Dia 3 (3)
-                    int dia = i < 3 ? 1 : i < 7 ? 2 : 3;
+                    if (local.Nombre != "FANTASMA" && visitante.Nombre != "FANTASMA")
+                    {
+                        int partidoIndex = fecha.Partidos.Count;
+                        int dia = partidoIndex % 3 + 1;
 
-                    fecha.Partidos.Add(new Partido(local, visitante, ronda + 1, dia));
+                        fecha.Partidos.Add(new Partido(local, visitante, ronda + 1, dia));
+                    }
                 }
 
                 fixture.Add(fecha);
 
-                // Rotar: fijar circulo[0], mover el ultimo al indice 1
                 var ultimo = circulo[n - 1];
                 circulo.RemoveAt(n - 1);
                 circulo.Insert(1, ultimo);
