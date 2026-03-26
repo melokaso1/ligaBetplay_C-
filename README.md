@@ -5,10 +5,10 @@
 **Simulador de la Liga BetPlay colombiana como aplicación de consola en C#.**  
 Gestiona equipos, genera un calendario todos contra todos y simula jornadas con tabla de posiciones en tiempo real.
 
-[](https://dotnet.microsoft.com/)
-[](https://learn.microsoft.com/en-us/dotnet/csharp/)
-[](LICENSE)
-[]()
+[![.NET](https://img.shields.io/badge/.NET-8.0+-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![C#](https://img.shields.io/badge/C%23-100%25-239120?style=for-the-badge&logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+[![License](https://img.shields.io/badge/Licencia-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Status](https://img.shields.io/badge/V1-Terminada-brightgreen?style=for-the-badge)]()
 
 </div>
 
@@ -39,7 +39,7 @@ El proyecto sigue una arquitectura en capas que separa la lógica de negocio (`C
 ## ✨ Características
 
 | Característica | Descripción |
-| --- | --- |
+|---|---|
 | 🗓️ **Calendario round-robin** | Generación automática del fixture todos contra todos |
 | 🎲 **Simulación de partidos** | Resultados aleatorios con goles, puntos y diferencia de gol |
 | 📊 **Tabla de posiciones** | Clasificación en tiempo real con PJ, PG, PE, PP, GF, GC y DG |
@@ -133,30 +133,26 @@ dotnet run
 #### 🐧 Linux
 
 1. Instalar el .NET SDK para tu distribución desde la [web oficial de .NET](https://dotnet.microsoft.com/download)
-  
-  *Ejemplo en Ubuntu/Debian:*
-  
-  ```bash
-  sudo apt-get update
-  sudo apt-get install -y dotnet-sdk-8.0
-  ```
-  
+
+   *Ejemplo en Ubuntu/Debian:*
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y dotnet-sdk-8.0
+   ```
+
 2. Verificar la instalación:
-  
-  ```bash
-  dotnet --version
-  ```
-  
+   ```bash
+   dotnet --version
+   ```
+
 3. Compilar y ejecutar:
-  
-  ```bash
-  cd ligaBetplay_C-
-  git checkout develop
-  dotnet restore
-  dotnet build
-  dotnet run
-  ```
-  
+   ```bash
+   cd ligaBetplay_C-
+   git checkout develop
+   dotnet restore
+   dotnet build
+   dotnet run
+   ```
 
 > **Nota:** Toda la interacción es por consola, por lo que no se requiere entorno gráfico. Funciona perfectamente en servidores o terminales SSH.
 
@@ -165,29 +161,25 @@ dotnet run
 #### 🍎 macOS
 
 1. Instalar el .NET SDK para macOS (compatible con chips Intel x64 y Apple Silicon ARM) desde la [web oficial de .NET](https://dotnet.microsoft.com/download)
-  
-  *Alternativa con Homebrew:*
-  
-  ```bash
-  brew install --cask dotnet-sdk
-  ```
-  
+
+   *Alternativa con Homebrew:*
+   ```bash
+   brew install --cask dotnet-sdk
+   ```
+
 2. Verificar la instalación:
-  
-  ```bash
-  dotnet --version
-  ```
-  
+   ```bash
+   dotnet --version
+   ```
+
 3. Abrir la app **Terminal** y ejecutar:
-  
-  ```bash
-  cd ligaBetplay_C-
-  git checkout develop
-  dotnet restore
-  dotnet build
-  dotnet run
-  ```
-  
+   ```bash
+   cd ligaBetplay_C-
+   git checkout develop
+   dotnet restore
+   dotnet build
+   dotnet run
+   ```
 
 > **Nota Apple Silicon (M1/M2/M3):** Asegúrate de descargar el instalador para arquitectura **ARM64** para obtener el mejor rendimiento.
 
@@ -227,7 +219,7 @@ Las siguientes funcionalidades están planificadas para próximas versiones:
 ## 👥 Autores
 
 | Nombre | GitHub |
-| --- | --- |
+|---|---|
 | Tomas Felipe Medina Prada | [@Tomfmp2](https://github.com/Tomfmp2) |
 | Jhon Alejandro Escobar Lozada | [@melokaso1](https://github.com/melokaso1) |
 
