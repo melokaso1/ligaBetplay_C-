@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="Core\Data\" />
+    <Folder Include="Core\Models\" />
+    <Folder Include="Core\Services\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Modules\Equipos\" />
+    <Folder Include="Modules\Equipos\Models\" />
+    <Folder Include="Modules\Equipos\Services\" />
+    <Folder Include="Modules\Equipos\Views\" />
+    <Folder Include="Modules\Estadisticas\" />
+    <Folder Include="Modules\Estadisticas\Services\" />
+    <Folder Include="Modules\Estadisticas\Views\" />
+    <Folder Include="Modules\Menus\" />
+    <Folder Include="Modules\Partidos\" />
+    <Folder Include="Modules\Partidos\Models\" />
+    <Folder Include="Modules\Partidos\Services\" />
+    <Folder Include="Modules\Partidos\Views\" />
+    <Folder Include="Modules\Tabla\" />
+    <Folder Include="Modules\Tabla\Models\" />
+    <Folder Include="Modules\Tabla\Services\" />
+    <Folder Include="Modules\Tabla\Views\" />
+  </ItemGroup>
+
+</Project>
