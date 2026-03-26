@@ -17,6 +17,7 @@ namespace LigaBetplay.Modules.Equipos
 
         public static void ListarEquipos()
         {
+            Console.Clear();
             var equipos = TorneoApp.Instance.Equipos.ListarEquipos();
             Console.WriteLine("\n--- Equipos Registrados ---");
             if (equipos.Count == 0)

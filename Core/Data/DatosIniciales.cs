@@ -1,5 +1,5 @@
-using LigaBetplay.Core.Models;
 using System.Collections.Generic;
+using LigaBetplay.Core.Models;
 
 namespace LigaBetplay.Core.Data
 {
@@ -29,7 +29,7 @@ namespace LigaBetplay.Core.Data
                 new Equipo("Alianza Valledupar"),
                 new Equipo("Boyaca Chico"),
                 new Equipo("Cucuta Deportivo"),
-                new Equipo("Deportivo Pereira")
+                new Equipo("Deportivo Pereira"),
             };
         }
     }

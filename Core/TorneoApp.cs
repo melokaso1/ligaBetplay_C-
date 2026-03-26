@@ -2,9 +2,9 @@ using System;
 using LigaBetplay.Core.Data;
 using LigaBetplay.Core.Services;
 using LigaBetplay.Modules.Equipos;
+using LigaBetplay.Modules.Estadisticas;
 using LigaBetplay.Modules.Partidos;
 using LigaBetplay.Modules.Tabla;
-using LigaBetplay.Modules.Estadisticas;
 
 namespace LigaBetplay.Core
 {
@@ -27,11 +27,11 @@ namespace LigaBetplay.Core
         {
             // 1. Inicializar el estado central
             Contexto = new TorneoContext();
-            
+
             // 2. Inicializar servicios base
             var servicioRandom = new ServicioRandom();
             Calendario = new ServicioCalendario();
-            
+
             // 3. Inicializar servicios de negocio
             Equipos = new ServicioEquipos(Contexto);
             Partidos = new ServicioPartidos(Contexto, servicioRandom);
@@ -67,7 +67,7 @@ namespace LigaBetplay.Core
             InicializarLiga();
             Console.WriteLine("\n  La liga ha sido reiniciada completamente.");
         }
-        
+
         // Atajo para regenerar el fixture
         public void RegenerarFixture()
         {

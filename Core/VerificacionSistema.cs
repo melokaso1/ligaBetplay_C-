@@ -32,7 +32,9 @@ namespace LigaBetplay.Core
 
             // Generar el calendario round-robin y almacenarlo en el contexto
             contexto.Fixture = servicioCalendario.GenerarFixture(contexto.Equipos);
-            Console.WriteLine($"Fixture generado: {contexto.Fixture.Count} fechas de 10 partidos cada una.");
+            Console.WriteLine(
+                $"Fixture generado: {contexto.Fixture.Count} fechas de 10 partidos cada una."
+            );
 
             // --- ESCENARIO 2: Simular la Fecha 1 y mostrar tabla ---
             Console.WriteLine("\n=== ESCENARIO 2: Simulacion de la Fecha 1 ===");
@@ -51,5 +53,3 @@ namespace LigaBetplay.Core
         }
     }
 }
-
-

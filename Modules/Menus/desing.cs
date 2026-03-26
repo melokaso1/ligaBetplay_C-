@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using LigaBetplay.Core;
-using ligabetplay.Modules.Menus_logic;
 using LigaBetplay.Modules.Equipos;
-using LigaBetplay.Modules.Partidos;
-using LigaBetplay.Modules.Tabla;
 using LigaBetplay.Modules.Estadisticas;
+using ligabetplay.Modules.Menus_logic;
+using LigaBetplay.Modules.Partidos;
+using ligabetplay.Modules.Partidos.Views;
+using LigaBetplay.Modules.Tabla;
+using ligabetplay.Modules.Tabla.Views;
 
 namespace ligabetplay.Modules.Menus;
 
@@ -16,8 +18,8 @@ public class Desing
         Dictionary<string, Action> Selections = new Dictionary<string, Action>
         {
             { "1", teams_manaments },
-            { "2", sim_matches },
-            { "3", show_pos_table },
+            { "2", MatchView.sim_matches },
+            { "3", Tablaview.show_pos_table },
             { "4", show_stats },
             { "5", () => TorneoApp.Instance.ReiniciarTorneo() },
             { "0", () => Environment.Exit(0) },
@@ -95,71 +97,6 @@ Oprime el numero que quieras seleccionar..."
 
             Logic.Menus_logic(Selections);
         }
-    }
-
-    public static void sim_matches()
-    {
-        bool inMenu = true;
-        Dictionary<string, Action> Selections = new Dictionary<string, Action>
-        {
-            { "1", PartidosUI.SimularFecha },
-            { "2", PartidosUI.VerHistorial },
-            { "0", () => inMenu = false },
-        };
-
-        while (inMenu)
-        {
-            Console.Clear();
-            Console.Write(
-                @"
-
-░██████╗██╗███╗░░░███╗██╗░░░██╗██╗░░░░░░█████╗░░█████╗░██╗░█████╗░███╗░░██╗
-██╔════╝██║████╗░████║██║░░░██║██║░░░░░██╔══██╗██╔══██╗██║██╔══██╗████╗░██║
-╚█████╗░██║██╔████╔██║██║░░░██║██║░░░░░███████║██║░░╚═╝██║██║░░██║██╔██╗██║
-░╚═══██╗██║██║╚██╔╝██║██║░░░██║██║░░░░░██╔══██║██║░░██╗██║██║░░██║██║╚████║
-██████╔╝██║██║░╚═╝░██║╚██████╔╝███████╗██║░░██║╚█████╔╝██║╚█████╔╝██║░╚███║
-╚═════╝░╚═╝╚═╝░░░░░╚═╝░╚═════╝░╚══════╝╚═╝░░╚═╝░╚════╝░╚═╝░╚════╝░╚═╝░░╚══╝
-
-██████╗░░█████╗░██████╗░████████╗██╗██████╗░░█████╗░░██████╗
-██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██║██╔══██╗██╔══██╗██╔════╝
-██████╔╝███████║██████╔╝░░░██║░░░██║██║░░██║██║░░██║╚█████╗░
-██╔═══╝░██╔══██║██╔══██╗░░░██║░░░██║██║░░██║██║░░██║░╚═══██╗
-██║░░░░░██║░░██║██║░░██║░░░██║░░░██║██████╔╝╚█████╔╝██████╔╝
-╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═╝╚═════╝░░╚════╝░╚═════╝░
-"
-            );
-
-            int proxima = TorneoApp.Instance.Partidos.ObtenerNumeroFechaActual();
-            int total = TorneoApp.Instance.Partidos.TotalFechas();
-
-            if (TorneoApp.Instance.Partidos.HayFechasPendientes())
-                Console.WriteLine($"\n  Proxima fecha a simular: Fecha {proxima} de {total}");
-            else
-                Console.WriteLine("\n  Todas las fechas han sido simuladas.");
-
-            Console.WriteLine("\n  1. Simular siguiente fecha");
-            Console.WriteLine("  2. Ver historial de partidos");
-            Console.WriteLine("  0. Volver");
-            Console.Write("\n  Oprime el numero que quieras seleccionar...");
-
-            Logic.Menus_logic(Selections);
-        }
-    }
-
-    public static void show_pos_table()
-    {
-        Console.Clear();
-        Console.Write(
-            @"
-  _____     _     _             _                        _      _                       
- |_   _|_ _| |__ | | __ _    __| | ___   _ __   ___  ___(_) ___(_) ___  _ __   ___  ___ 
-   | |/ _` | '_ \| |/ _` |  / _` |/ _ \ | '_ \ / _ \/ __| |/ __| |/ _ \| '_ \ / _ \/ __|
-   | | (_| | |_) | | (_| | | (_| |  __/ | |_) | (_) \__ \ | (__| | (_) | | | |  __/\__ \
-   |_|\__,_|_.__/|_|\__,_|  \__,_|\___| | .__/ \___/|___/_|\___|_|\___/|_| |_|\___||___/
-                                        |_|                                             
-"
-        );
-        TablaUI.MostrarTabla();
     }
 
     public static void show_stats()

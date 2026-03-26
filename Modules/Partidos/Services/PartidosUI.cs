@@ -22,13 +22,18 @@ namespace LigaBetplay.Modules.Partidos
             }
             else
             {
-                var partidosPorFecha = System.Linq.Enumerable.OrderBy(System.Linq.Enumerable.GroupBy(partidos, p => p.NumeroFecha), g => g.Key);
+                var partidosPorFecha = System.Linq.Enumerable.OrderBy(
+                    System.Linq.Enumerable.GroupBy(partidos, p => p.NumeroFecha),
+                    g => g.Key
+                );
                 foreach (var fecha in partidosPorFecha)
                 {
                     Console.WriteLine($"\n  === FECHA {fecha.Key} ===");
                     foreach (var p in fecha)
                     {
-                        Console.WriteLine($"    {p.EquipoLocal.Nombre,-28} {p.GolesLocal} - {p.GolesVisitante,1}  {p.EquipoVisitante.Nombre}");
+                        Console.WriteLine(
+                            $"    {p.EquipoLocal.Nombre, -28} {p.GolesLocal} - {p.GolesVisitante, 1}  {p.EquipoVisitante.Nombre}"
+                        );
                     }
                 }
             }

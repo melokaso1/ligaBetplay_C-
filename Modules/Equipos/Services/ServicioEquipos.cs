@@ -23,13 +23,16 @@ namespace LigaBetplay.Modules.Equipos
             // Bloquear cambios si la liga ya inicio
             if (_contexto.FechaActual > 1)
             {
-                Console.WriteLine("La liga ya inicio. Para agregar equipos debes reiniciar la liga desde el menu principal.");
+                Console.WriteLine(
+                    "La liga ya inicio. Para agregar equipos debes reiniciar la liga desde el menu principal."
+                );
                 return;
             }
 
             // Validar duplicado sin distinguir mayusculas
-            bool yaExiste = _contexto.Equipos
-                .Any(e => e.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+            bool yaExiste = _contexto.Equipos.Any(e =>
+                e.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase)
+            );
 
             if (yaExiste)
             {
@@ -47,12 +50,15 @@ namespace LigaBetplay.Modules.Equipos
             // Bloquear cambios si la liga ya inicio
             if (_contexto.FechaActual > 1)
             {
-                Console.WriteLine("La liga ya inicio. Para eliminar equipos debes reiniciar la liga desde el menu principal.");
+                Console.WriteLine(
+                    "La liga ya inicio. Para eliminar equipos debes reiniciar la liga desde el menu principal."
+                );
                 return;
             }
 
-            var equipo = _contexto.Equipos
-                .FirstOrDefault(e => e.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+            var equipo = _contexto.Equipos.FirstOrDefault(e =>
+                e.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase)
+            );
 
             if (equipo == null)
             {

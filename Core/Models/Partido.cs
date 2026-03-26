@@ -25,4 +25,3 @@ namespace LigaBetplay.Core.Models
         }
     }
 }
-

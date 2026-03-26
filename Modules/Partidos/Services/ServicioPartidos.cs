@@ -51,7 +51,9 @@ namespace LigaBetplay.Modules.Partidos
             {
                 Console.WriteLine($"\n  [ Dia {grupo.Key} ]");
                 foreach (var partido in grupo)
-                    Console.WriteLine($"    {partido.EquipoLocal.Nombre,-28} {partido.GolesLocal} - {partido.GolesVisitante,1}  {partido.EquipoVisitante.Nombre}");
+                    Console.WriteLine(
+                        $"    {partido.EquipoLocal.Nombre, -28} {partido.GolesLocal} - {partido.GolesVisitante, 1}  {partido.EquipoVisitante.Nombre}"
+                    );
             }
 
             fecha.Simulada = true;
@@ -130,4 +132,3 @@ namespace LigaBetplay.Modules.Partidos
         }
     }
 }
-

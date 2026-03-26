@@ -10,25 +10,27 @@ namespace LigaBetplay.Core.Services
         public List<Fecha> GenerarFixture(List<Equipo> equipos)
         {
             var fixture = new List<Fecha>();
-            if (equipos.Count < 2) return fixture;
+            if (equipos.Count < 2)
+                return fixture;
 
             var circulo = new List<Equipo>(equipos);
             Equipo fantasma = new Equipo("FANTASMA");
-            
+
             if (circulo.Count % 2 != 0)
             {
                 circulo.Add(fantasma);
             }
 
-            int n = circulo.Count; 
+            int n = circulo.Count;
 
-            for (int ronda = 0; ronda < n - 1; ronda++) 
+            for (int ronda = 0; ronda < n - 1; ronda++)
             {
                 var fecha = new Fecha(ronda + 1);
 
-                for (int i = 0; i < n / 2; i++) 
+                for (int i = 0; i < n / 2; i++)
                 {
-                    Equipo local, visitante;
+                    Equipo local,
+                        visitante;
 
                     if (ronda % 2 == 0)
                     {

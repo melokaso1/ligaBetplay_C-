@@ -18,7 +18,5 @@ namespace LigaBetplay.Core.Services
         {
             return _random.Next(0, 6);
         }
-
-
     }
 }
